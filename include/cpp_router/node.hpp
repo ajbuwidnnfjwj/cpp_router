@@ -74,8 +74,14 @@ namespace pathTree {
 		}
 
 		std::pair<CHILD_MAP_ITER_TYPES, bool> insert(std::string sub_path) {
-			auto [iter, success] = childs.insert({ sub_path, std::make_unique<Node>(sub_path) });
-			return { iter, success };
+			CHILD_MAP_ITER_TYPES iter = childs.find(sub_path);
+
+			if (iter != childs.end()) {
+				return { iter, true };
+			}
+
+			auto [iter_new, success] = childs.insert({ sub_path, std::make_unique<Node>(sub_path) });
+			return { iter_new, success };
 		}
 
 		void pop(std::string sub_path) {
